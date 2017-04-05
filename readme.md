@@ -13,7 +13,7 @@
 
 - Delete this file and rename `app-readme.md` to `readme.md` and fill it out.
 
-- Clone this repo and install the dependencies with [npm](https://npmjs.com) by running: `npm install`.
+- Clone this repo and install the dependencies with [npm] and [bower](https://npmjs.com) by running: `npm install` and `bower install`.
 
 
 

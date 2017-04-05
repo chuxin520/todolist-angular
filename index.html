@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Template • TodoMVC</title>
+	<link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+	<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+	<!-- CSS overrides - remove if you don't need it -->
+	<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<section class="todoapp" ng-app="MyTodoMvc" ng-controller="MainController">
+	<header class="header">
+		<h1>todos</h1>
+		<form ng-submit="add()">
+			<input class="new-todo" placeholder="What needs to be done?" autofocus ng-model="text">
+		</form>
+	</header>
+	<!-- This section should be hidden by default and shown when there are todos -->
+	<section class="main">
+		<input class="toggle-all" type="checkbox" ng-click="toggle()">
+		<label for="toggle-all">Mark all as complete</label>
+		<ul class="todo-list">
+			<!-- These are here just to show the structure of the list items -->
+			<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
+			<li ng-class="{completed:todo.completed,editing:todo.id===currentEditingId}" ng-repeat="todo in todos | filter: selector : equalCompare">
+				<div class="view">
+					<input class="toggle" type="checkbox" ng-model="todo.completed">
+					<label ng-dblclick="editing(todo.id)">{{todo.text}}</label>
+					<button class="destroy" ng-click="remove(todo.id)"></button>
+				</div>
+				<form ng-submit="save()">
+					<input class="edit" ng-model="todo.text" ng-blur="save()">
+				</form>
+			</li>
+
+		</ul>
+	</section>
+	<!-- This footer should hidden by default and shown when there are todos -->
+	<footer class="footer">
+		<!-- This should be `0 items left` by default -->
+		<span class="todo-count"><strong>{{todos.length}}</strong> item left</span>
+		<!-- Remove this if you don't implement routing -->
+		<ul class="filters">
+			<li>
+				<a  href="#/" ng-class="{selected:$location.path() == '/'}">All</a>
+			</li>
+			<li>
+				<a href="#/active" ng-class="{selected:$location.path() == '/active'}" >Active</a>
+			</li>
+			<li>
+				<a href="#/completed" ng-class="{selected:$location.path() == '/completed'}" >Completed</a>
+			</li>
+		</ul>
+		<!-- Hidden if no completed items are left ↓ -->
+		<button class="clear-completed" ng-click="clear()" ng-show="existCompleted()">Clear completed</button>
+	</footer>
+</section>
+<footer class="info">
+	<p>Double-click to edit a todo</p>
+	<!-- Remove the below line ↓ -->
+	<p>Template by <a href="http://sindresorhus.com">Sindre Sorhus</a></p>
+	<!-- Change this out with your name and url ↓ -->
+	<p>Created by <a href="http://todomvc.com">you</a></p>
+	<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+</footer>
+<!-- Scripts here. Don't remove ↓ -->
+<script src="node_modules/angular/angular.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+<script src="bower_components/angularLocalStorage/src/angularLocalStorage.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

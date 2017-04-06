@@ -21,24 +21,35 @@
 		//从localstorage中get数据，如果不为空，赋值给$scope.todos
 		var todoInStore = storage.get('todos');
 		$scope.todos = todoInStore || [];
+		$scope.todoslength = 0;
 		//监听$scope.todos，当它改变时，使用localstorage的set()方法
 
 		$scope.$watch('todos', function () {
 			storage.set('todos', $scope.todos);
 		}, true);
-
-//保证id不会重复
-		$scope.text = '';
-		function getId() {
-			var id = Math.random();
-			for (var i = 0; i < $scope.todos.length; i++) {
-				if ($scope.todos[i].id === id) {
-					id = getId();
-					break;
+		// 监控剩余的list    
+		$scope.$watch('todos', function () {
+			var result1 = [];
+				for (var i = 0; i < $scope.todos.length; i++) {
+				if ($scope.todos[i].completed === false) {
+					result1.push($scope.todos[i]);
 				}
 			}
-			return id;
-		};
+			$scope.todoslength = result1.length;
+		}, true);
+
+//保证id不会重复
+$scope.text = '';
+function getId() {
+	var id = Math.random();
+	for (var i = 0; i < $scope.todos.length; i++) {
+		if ($scope.todos[i].id === id) {
+			id = getId();
+			break;
+		}
+	}
+	return id;
+};
 		//增加
 		$scope.add = function () {
 			if (!$scope.text) {
@@ -70,6 +81,7 @@
 		}
 		//清空完成的
 		var result = [];
+
 		$scope.clear = function () {
 			for (var i = 0; i < $scope.todos.length; i++) {
 				if ($scope.todos[i].completed === false) {
@@ -77,6 +89,7 @@
 				}
 			}
 			$scope.todos = result;
+
 		}
 		//编辑
 		// 当前编辑哪个元素
@@ -109,14 +122,14 @@
 		$scope.$watch('$location.path()',function(now, old){
 			switch (now){
 				case '/active':
-					$scope.selector = {completed:false};
-					break;
+				$scope.selector = {completed:false};
+				break;
 				case '/completed':
-					$scope.selector = { completed: true };
-					break;
+				$scope.selector = { completed: true };
+				break;
 				default:
-					$scope.selector = {};
-					break;
+				$scope.selector = {};
+				break;
 			}
 
 		});
@@ -127,6 +140,8 @@
 			// return false;
 			return source === target;
 		};
+
+
 
 
 	}]);
